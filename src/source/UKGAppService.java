@@ -8,6 +8,7 @@ public class UKGAppService {
 	private static String cmd = "start";
 	//The name of the process should contain folder name like %"ukg-app"% in it's command line path
 	private static String processName = "ukg-app";
+	public static List<String> imageList = new ArrayList<>();
 
 	public static void main(String[] args) {
 
@@ -16,6 +17,7 @@ public class UKGAppService {
 		}
 
 		if ("start".equalsIgnoreCase(cmd)) {
+			loadImages();
 			idleTimeCalculator = new Win32IdleTime();
 			idleTimeCalculator.start();
 		} else if ("stop".equalsIgnoreCase(cmd)) {			
@@ -24,7 +26,19 @@ public class UKGAppService {
 
 		}
 	}
-
+	
+	//loads GIFs present in resources folder
+	public static void loadImages() {
+		System.out.println("loading Images");
+		File resDir = new File("resources");
+		File[] files = resDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".gif"));
+		for (int i = 0; i < files.length; i++) {
+			String fileName = files[i].getName();
+			System.out.println(fileName);
+			imageList.add(fileName);
+		}
+	}
+	
 	public static void stopUKGApp() {
 		String strCmdLine = "wmic process where \"Name='javaw.exe' AND CommandLine like '%%" + processName+ "%%'\" CALL TERMINATE";
 		System.out.println("UKG App Task End Command : "+strCmdLine);
