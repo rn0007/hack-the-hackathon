@@ -89,19 +89,11 @@ public class Win32IdleTime {
       startTimer();
    }
 
-   //   public static void loadImages(){
-   //		imageList.add("aim_for_the_sky.gif");
-   //		imageList.add("belly_workout.gif");
-   //		imageList.add("book_weights.gif");
-   //		imageList.add("calf_raises.gif");
-   //		imageList.add( "hunchback_remover.gif");
-   //		imageList.add("leg_raises.gif");
-   //		imageList.add("neck_stretch.gif");
-   //		imageList.add("shoulder_sqeeze.gif");
-   //   }
+
 
    public static int getRandomNumber(){
       Random r = new Random();
+      System.out.println(imageList.size());
       return r.nextInt(imageList.size());
    }
 
