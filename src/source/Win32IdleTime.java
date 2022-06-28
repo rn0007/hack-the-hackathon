@@ -22,6 +22,9 @@ import com.sun.jna.win32.StdCallLibrary;
 public class Win32IdleTime {
 
    public static List<String> imageList = UKGAppService.getImageList();
+   
+   public static long durationToTrackBeingOnline = 20000;
+   public static long durationInWhichToCloseTheDialog = 10000;
 
    public interface Kernel32 extends StdCallLibrary {
       Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class);
@@ -142,8 +145,6 @@ public class Win32IdleTime {
          } else {
             newState = State.IDLE;
          }
-         // State newState = idleSec < 30 ? State.ONLINE : idleSec > 5 * 60 ?
-         // State.AWAY : State.IDLE;
          if (newState != state) {
             if (newState == State.ONLINE && state == State.AWAY) {
                startTimeBeingOnline = System.currentTimeMillis();
@@ -157,9 +158,7 @@ public class Win32IdleTime {
          } else {
             if (state.equals(State.ONLINE)) {
                long endTimeBeingOnline = System.currentTimeMillis();
-               // if (endTimeBeingOnline - startTimeBeingOnline > 180000 &&
-               // !hasBeenAwayOnce) {
-               if (endTimeBeingOnline - startTimeBeingOnline > 20000 && !hasBeenAwayOnce) {
+               if (endTimeBeingOnline - startTimeBeingOnline > durationToTrackBeingOnline && !hasBeenAwayOnce) {
                   System.out.println(
                         "You are online from a long time " + dateFormat.format(new Date()) + " # " + state);
 
@@ -176,12 +175,11 @@ public class Win32IdleTime {
                   onlineTagDisplayed = true;
                   startTimeBeingOnline = System.currentTimeMillis();
                   // Call AWT Code Here
-               } else if (endTimeBeingOnline - startTimeBeingOnline > 180000) {
+               } else if (endTimeBeingOnline - startTimeBeingOnline > durationToTrackBeingOnline) {
                   System.out.println("endTimeBeingOnline " + endTimeBeingOnline + "startTimeBeingOnline "
                         + startTimeBeingOnline + " " + dateFormat.format(new Date()) + " # " + state);
 
-                  hasBeenAwayOnce = false;
-                  // startTimeBeingOnline = System.currentTimeMillis();
+                  hasBeenAwayOnce = false;               
                }
             }
          }
