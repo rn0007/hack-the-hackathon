@@ -1,6 +1,9 @@
 package source;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UKGAppService {
 
@@ -8,9 +11,13 @@ public class UKGAppService {
 	private static String cmd = "start";
 	//The name of the process should contain folder name like %"ukg-app"% in it's command line path
 	private static String processName = "ukg-app";
-	public static List<String> imageList = new ArrayList<>();
+	private static List<String> imageList = new ArrayList<>();
 
-	public static void main(String[] args) {
+	public static List<String> getImageList() {
+      return imageList;
+   }
+
+   public static void main(String[] args) {
 
 		if (args.length > 0) {
 			cmd = args[0];
@@ -29,12 +36,12 @@ public class UKGAppService {
 	
 	//loads GIFs present in resources folder
 	public static void loadImages() {
-		System.out.println("loading Images");
+		//System.out.println("loading Images");
 		File resDir = new File("resources");
 		File[] files = resDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".gif"));
 		for (int i = 0; i < files.length; i++) {
 			String fileName = files[i].getName();
-			System.out.println(fileName);
+			//System.out.println(fileName);
 			imageList.add(fileName);
 		}
 	}

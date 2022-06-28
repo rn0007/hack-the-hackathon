@@ -15,13 +15,14 @@ public class TestDialog extends JFrame {
    private static final long serialVersionUID = 1L;
 
    public TestDialog(String image) {
-		setSize(500, 400);
+		setSize(450 , 540);
 		// setLocation(1325, 600);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+		Rectangle winSize = ge.getMaximumWindowBounds();
 		Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
-		int x = (int) rect.getMaxX() - getWidth();
-		int y = (int) rect.getMaxY() - getHeight();
+		int x = (int) winSize.getMaxX() - getWidth();
+		int y = (int) winSize.getMaxY() - getHeight();
 		setLocation(x, y);
 		//setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setAlwaysOnTop(true);

@@ -1,11 +1,13 @@
 package source;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import com.sun.jna.Native;
 import com.sun.jna.Structure;
@@ -18,9 +20,9 @@ import com.sun.jna.win32.StdCallLibrary;
  * @author gaurav.srivastava
  */
 public class Win32IdleTime {
-	
+
    public static List<String> imageList = new ArrayList<>();
-   
+
    public interface Kernel32 extends StdCallLibrary {
       Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class);
 
@@ -81,25 +83,25 @@ public class Win32IdleTime {
    };
 
    public void start(){
-	  startTimer();
+      startTimer();
    }
-   
-   public static void loadImages(){
-		imageList.add("aim_for_the_sky.gif");
-		imageList.add("belly_workout.gif");
-		imageList.add("book_weights.gif");
-		imageList.add("calf_raises.gif");
-		imageList.add( "hunchback_remover.gif");
-		imageList.add("leg_raises.gif");
-		imageList.add("neck_stretch.gif");
-		imageList.add("shoulder_sqeeze.gif");
-   }
-	
+
+   //   public static void loadImages(){
+   //		imageList.add("aim_for_the_sky.gif");
+   //		imageList.add("belly_workout.gif");
+   //		imageList.add("book_weights.gif");
+   //		imageList.add("calf_raises.gif");
+   //		imageList.add( "hunchback_remover.gif");
+   //		imageList.add("leg_raises.gif");
+   //		imageList.add("neck_stretch.gif");
+   //		imageList.add("shoulder_sqeeze.gif");
+   //   }
+
    public static int getRandomNumber(){
-		Random r = new Random();
-		return r.nextInt(8);
+      Random r = new Random();
+      return r.nextInt(imageList.size());
    }
-	
+
    public static void startTimer() {
       if (!System.getProperty("os.name").contains("Windows")) {
          System.err.println("ERROR: Only implemented on Windows");
@@ -160,14 +162,14 @@ public class Win32IdleTime {
                if (endTimeBeingOnline - startTimeBeingOnline > 20000 && !hasBeenAwayOnce) {
                   System.out.println(
                         "You are online from a long time " + dateFormat.format(new Date()) + " # " + state);
-				  
-				  String appTitle = "UKG Health Assistant";
-						
-				  int randomNum = getRandomNumber();
-				  String image = imageList.get(randomNum);
-						
+
+                  String appTitle = "UKG Health Assistant";
+                  loadImages();
+                  int randomNum = getRandomNumber();
+                  String image = imageList.get(randomNum);
+
                   dialog = new TestDialog(image);
-				  dialog.setTitle(appTitle);
+                  dialog.setTitle(appTitle);
                   dialog.show();
 
                   timeatwhichDialogIsDisplayed = System.currentTimeMillis();
@@ -187,6 +189,19 @@ public class Win32IdleTime {
             Thread.sleep(1000);
          } catch (Exception ex) {
          }
+      }
+      
+      
+   }
+   
+   public static void loadImages() {
+      //System.out.println("loading Images");
+      File resDir = new File("resources");
+      File[] files = resDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".gif"));
+      for (int i = 0; i < files.length; i++) {
+         String fileName = files[i].getName();
+         System.out.println(fileName);
+         imageList.add(fileName);
       }
    }
 }
