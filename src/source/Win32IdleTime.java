@@ -18,6 +18,9 @@ import com.sun.jna.win32.StdCallLibrary;
  * @author gaurav.srivastava
  */
 public class Win32IdleTime {
+	
+   public static List<String> imageList = new ArrayList<>();
+   
    public interface Kernel32 extends StdCallLibrary {
       Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class);
 
@@ -77,7 +80,27 @@ public class Win32IdleTime {
       UNKNOWN, ONLINE, IDLE, AWAY
    };
 
-   public static void main(String[] args) {
+   public void start(){
+	  startTimer();
+   }
+   
+   public static void loadImages(){
+		imageList.add("aim_for_the_sky.gif");
+		imageList.add("belly_workout.gif");
+		imageList.add("book_weights.gif");
+		imageList.add("calf_raises.gif");
+		imageList.add( "hunchback_remover.gif");
+		imageList.add("leg_raises.gif");
+		imageList.add("neck_stretch.gif");
+		imageList.add("shoulder_sqeeze.gif");
+   }
+	
+   public static int getRandomNumber(){
+		Random r = new Random();
+		return r.nextInt(8);
+   }
+	
+   public static void startTimer() {
       if (!System.getProperty("os.name").contains("Windows")) {
          System.err.println("ERROR: Only implemented on Windows");
          System.exit(1);
@@ -134,10 +157,17 @@ public class Win32IdleTime {
                long endTimeBeingOnline = System.currentTimeMillis();
                // if (endTimeBeingOnline - startTimeBeingOnline > 180000 &&
                // !hasBeenAwayOnce) {
-               if (endTimeBeingOnline - startTimeBeingOnline > 10000 && !hasBeenAwayOnce) {
+               if (endTimeBeingOnline - startTimeBeingOnline > 20000 && !hasBeenAwayOnce) {
                   System.out.println(
                         "You are online from a long time " + dateFormat.format(new Date()) + " # " + state);
-                  dialog = new TestDialog();
+				  
+				  String appTitle = "UKG Health Assistant";
+						
+				  int randomNum = getRandomNumber();
+				  String image = imageList.get(randomNum);
+						
+                  dialog = new TestDialog(image);
+				  dialog.setTitle(appTitle);
                   dialog.show();
 
                   timeatwhichDialogIsDisplayed = System.currentTimeMillis();
