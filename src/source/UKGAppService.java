@@ -41,7 +41,7 @@ public class UKGAppService {
 		File[] files = resDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".gif"));
 		for (int i = 0; i < files.length; i++) {
 			String fileName = files[i].getName();
-			//System.out.println(fileName);
+			System.out.println(fileName);
 			imageList.add(fileName);
 		}
 	}

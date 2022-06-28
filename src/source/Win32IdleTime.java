@@ -21,7 +21,7 @@ import com.sun.jna.win32.StdCallLibrary;
  */
 public class Win32IdleTime {
 
-   public static List<String> imageList = new ArrayList<>();
+   public static List<String> imageList = UKGAppService.getImageList();
 
    public interface Kernel32 extends StdCallLibrary {
       Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class);
@@ -164,7 +164,7 @@ public class Win32IdleTime {
                         "You are online from a long time " + dateFormat.format(new Date()) + " # " + state);
 
                   String appTitle = "UKG Health Assistant";
-                  loadImages();
+                  //loadImages();
                   int randomNum = getRandomNumber();
                   String image = imageList.get(randomNum);
 
@@ -194,14 +194,4 @@ public class Win32IdleTime {
       
    }
    
-   public static void loadImages() {
-      //System.out.println("loading Images");
-      File resDir = new File("resources");
-      File[] files = resDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".gif"));
-      for (int i = 0; i < files.length; i++) {
-         String fileName = files[i].getName();
-         System.out.println(fileName);
-         imageList.add(fileName);
-      }
-   }
 }
