@@ -24,7 +24,7 @@ public class Win32IdleTime {
    public static List<String> imageList = UKGAppService.getImageList();
    
    public static long durationToTrackBeingOnline = 20000;
-   public static long durationInWhichToCloseTheDialog = 10000;
+   public static long durationInWhichToCloseTheDialog = 15000;
 
    public interface Kernel32 extends StdCallLibrary {
       Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class);
@@ -128,7 +128,7 @@ public class Win32IdleTime {
             hasBeenAwayOnce = false;
          }
          if (timeatwhichDialogIsDisplayed != 0
-               && System.currentTimeMillis() - timeatwhichDialogIsDisplayed > 10000) {
+               && System.currentTimeMillis() - timeatwhichDialogIsDisplayed > durationInWhichToCloseTheDialog) {
             if (dialog != null) {
                dialog.dispose();
                timeatwhichDialogIsDisplayed = 0;
