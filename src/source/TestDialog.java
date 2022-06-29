@@ -19,6 +19,8 @@ public class TestDialog extends JFrame {
 
    public TestDialog(String image) {
       setSize(450 , 570);
+      setJMenuBar(MenuBarSettings.createMenuBar());
+      setIconImage(new ImageIcon(TestDialog.class.getResource("/icon/UKG-Uonly_rgb.png")).getImage());
       // setLocation(1325, 600);
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
