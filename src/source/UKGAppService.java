@@ -66,7 +66,7 @@ public class UKGAppService {
 	   imageList.add( "hunchback_remover.gif");
 	   imageList.add("leg_raises.gif");
 	   imageList.add("neck_stretch.gif");
-	   imageList.add("shoulder_sqeeze.gif");
+	   imageList.add("shoulder_squeeze.gif");
 	   imageList.add("output-onlinegiftools.gif");
 	}
 	
