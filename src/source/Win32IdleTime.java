@@ -1,6 +1,5 @@
 package source;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,8 +22,10 @@ public class Win32IdleTime {
 
    public static List<String> imageList = UKGAppService.getImageList();
    
-   public static long durationToTrackBeingOnline = 20000;
-   public static long durationInWhichToCloseTheDialog = 15000;
+   public static long durationToTrackBeingOnline = 30000;
+   public static long additionallDuration = 0;
+   public static long durationInWhichToCloseTheDialog = 20000;
+   public static long timeatwhichDialogIsDisplayed = 0;
 
    public interface Kernel32 extends StdCallLibrary {
       Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("kernel32", Kernel32.class);
@@ -89,11 +90,9 @@ public class Win32IdleTime {
       startTimer();
    }
 
-
-
    public static int getRandomNumber(){
       Random r = new Random();
-      System.out.println(imageList.size());
+      System.out.println(imageList.size()+" images present");
       return r.nextInt(imageList.size());
    }
 
@@ -109,7 +108,8 @@ public class Win32IdleTime {
             "Current Date and Time for Online Status tracker " + dateFormat.format(new Date()) + " # " + state);
       boolean onlineTagDisplayed = false;
       boolean hasBeenAwayOnce = false;
-      long timeatwhichDialogIsDisplayed = 0;
+      //long timeatwhichDialogIsDisplayed = 0;
+      //long timeatwhichDialogIsClosed = 0;
       List<String> listofStatus = new ArrayList<>();
       TestDialog dialog = null;
       for (;;) {
@@ -119,11 +119,20 @@ public class Win32IdleTime {
             + " # " + state);
             hasBeenAwayOnce = false;
          }
+         System.out.println("dispose timer : system time - timeatwhichDialogIsDisplayed " + (System.currentTimeMillis() - timeatwhichDialogIsDisplayed ));
+         System.out.println("dispose timer : durationInWhichToCloseTheDialog " + durationInWhichToCloseTheDialog );
+         System.out.println("dispose timer :  additionallDuration "+additionallDuration);
+         System.out.println("dispose timer : durationInWhichToCloseTheDialog + additionallDuration   " + (durationInWhichToCloseTheDialog + additionallDuration));
+         System.out.println();
+         
          if (timeatwhichDialogIsDisplayed != 0
-               && System.currentTimeMillis() - timeatwhichDialogIsDisplayed > durationInWhichToCloseTheDialog) {
+               && System.currentTimeMillis() - timeatwhichDialogIsDisplayed > (durationInWhichToCloseTheDialog + additionallDuration)) {
             if (dialog != null) {
-               dialog.dispose();
-               timeatwhichDialogIsDisplayed = 0;
+	               dialog.dispose();
+	               additionallDuration = 0;
+	               timeatwhichDialogIsDisplayed = 0;
+	               dialog = null;
+	               startTimeBeingOnline = System.currentTimeMillis();
             }
          }
          onlineTagDisplayed = false;
@@ -150,7 +159,14 @@ public class Win32IdleTime {
          } else {
             if (state.equals(State.ONLINE)) {
                long endTimeBeingOnline = System.currentTimeMillis();
-               if (endTimeBeingOnline - startTimeBeingOnline > durationToTrackBeingOnline && !hasBeenAwayOnce) {
+               
+               System.out.println("online timer : endTimeBeingOnline - startTimeBeingOnline " + ( endTimeBeingOnline - startTimeBeingOnline));
+               System.err.println("additionallDuration "+additionallDuration);
+               System.out.println("online timer : durationToTrackBeingOnline + additionallDuration " + (durationToTrackBeingOnline + additionallDuration));
+               System.out.println("hasBeenAwayOnce "+hasBeenAwayOnce);
+               System.out.println();
+               
+               if (endTimeBeingOnline - startTimeBeingOnline > (durationToTrackBeingOnline + additionallDuration) && !hasBeenAwayOnce) {
                   System.out.println(
                         "You are online from a long time " + dateFormat.format(new Date()) + " # " + state);
 
@@ -158,16 +174,22 @@ public class Win32IdleTime {
                   //loadImages();
                   int randomNum = getRandomNumber();
                   String image = imageList.get(randomNum);
-
-                  dialog = new TestDialog(image);
-                  dialog.setTitle(appTitle);
-                  dialog.show();
-
-                  timeatwhichDialogIsDisplayed = System.currentTimeMillis();
+                  
+                  if(null == dialog){
+                	  System.out.println("dialog opened");
+	                  dialog = new TestDialog(image);
+	                  additionallDuration = 0;
+	                  durationInWhichToCloseTheDialog = 20000;
+	                  dialog.setTitle(appTitle);
+	                  dialog.show();
+	                  timeatwhichDialogIsDisplayed = System.currentTimeMillis();
+	                  TestDialog.initTime = timeatwhichDialogIsDisplayed;
+                  }
+                  
                   onlineTagDisplayed = true;
                   startTimeBeingOnline = System.currentTimeMillis();
                   // Call AWT Code Here
-               } else if (endTimeBeingOnline - startTimeBeingOnline > durationToTrackBeingOnline) {
+               } else if (endTimeBeingOnline - startTimeBeingOnline > (durationToTrackBeingOnline+additionallDuration)) {
                   System.out.println("endTimeBeingOnline " + endTimeBeingOnline + "startTimeBeingOnline "
                         + startTimeBeingOnline + " " + dateFormat.format(new Date()) + " # " + state);
 
