@@ -63,7 +63,7 @@ public class MenuBarSettings {
       helpMenu.setMnemonic(KeyEvent.VK_H);
       helpMenu.getAccessibleContext().setAccessibleDescription("Go to Help!");
       
-      JMenuItem oneToOneHelpMenu = new JMenuItem("Connect to 1tot1 help");
+      JMenuItem oneToOneHelpMenu = new JMenuItem("Connect to 1to1 help");
       oneToOneHelpMenu.setToolTipText("Connect to UKG's 1to1 employee assistance program.");
       oneToOneHelpMenu.addActionListener((event) -> {
          
