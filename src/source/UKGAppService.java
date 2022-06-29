@@ -67,6 +67,7 @@ public class UKGAppService {
 	   imageList.add("leg_raises.gif");
 	   imageList.add("neck_stretch.gif");
 	   imageList.add("shoulder_sqeeze.gif");
+	   imageList.add("output-onlinegiftools.gif");
 	}
 	
 	public static void stopUKGApp() {
