@@ -63,11 +63,11 @@ public class UKGAppService {
 	   imageList.add("belly_workout.gif");
 	   imageList.add("book_weights.gif");
 	   imageList.add("calf_raises.gif");
-	   imageList.add( "hunchback_remover.gif");
+	   imageList.add("hunchback_remover.gif");
 	   imageList.add("leg_raises.gif");
 	   imageList.add("neck_stretch.gif");
 	   imageList.add("shoulder_squeeze.gif");
-	   imageList.add("output-onlinegiftools.gif");
+	   imageList.add("breathe_in_out.gif");
 	}
 	
 	public static void stopUKGApp() {
