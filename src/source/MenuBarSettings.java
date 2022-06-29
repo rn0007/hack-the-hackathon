@@ -1,6 +1,11 @@
 package source;
 
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.JMenu;
@@ -28,10 +33,6 @@ public class MenuBarSettings {
 		timeToNudgeMenu.setMnemonic(KeyEvent.VK_T);
 		timeToNudgeMenu.getAccessibleContext().setAccessibleDescription("Time to nudge");
 		
-		JMenu helpMenu = new JMenu("Help");
-		helpMenu.setMnemonic(KeyEvent.VK_H);
-		helpMenu.getAccessibleContext().setAccessibleDescription("Go to Help!");
-
 		JMenuItem exitMenu = new JMenuItem("Exit");
 		exitMenu.setToolTipText("Exit application");
 		exitMenu.addActionListener((event) -> System.exit(0));
@@ -57,7 +58,33 @@ public class MenuBarSettings {
 			System.out.println("MenuBarSettings.createMenuBar()" + Win32IdleTime.durationToTrackBeingOnline);
 
 		});
+		
+		JMenu helpMenu = new JMenu("Help");
+      helpMenu.setMnemonic(KeyEvent.VK_H);
+      helpMenu.getAccessibleContext().setAccessibleDescription("Go to Help!");
+      
+      JMenuItem oneToOneHelpMenu = new JMenuItem("Connect to 1tot1 help");
+      oneToOneHelpMenu.setToolTipText("Connect to UKG's 1to1 employee assistance program.");
+      oneToOneHelpMenu.addActionListener((event) -> {
+         
+         Desktop d = Desktop.getDesktop();
+         try {
+            d.browse(new URI("https://1to1help.net/"));
+         }
+         catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+         catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+         }
+      });
+      
+      
+      helpMenu.add(oneToOneHelpMenu);
 
+      
 		timeToNudgeMenu.add(thirtyMinsMenuItem);
 		timeToNudgeMenu.add(fourtyFiveMinsMenuItem);
 		timeToNudgeMenu.add(oneHourMenuItem);

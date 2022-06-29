@@ -154,7 +154,7 @@ public class Win32IdleTime {
                   System.out.println(
                         "You are online from a long time " + dateFormat.format(new Date()) + " # " + state);
 
-                  String appTitle = "UKG Health Assistant";
+                  String appTitle = "UKrewer Wellness Assistant";
                   //loadImages();
                   int randomNum = getRandomNumber();
                   String image = imageList.get(randomNum);
