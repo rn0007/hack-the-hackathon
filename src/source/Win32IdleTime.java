@@ -21,10 +21,11 @@ import com.sun.jna.win32.StdCallLibrary;
 public class Win32IdleTime {
 
    public static List<String> imageList = UKGAppService.getImageList();
+   public static List<String> jokeImageList = UKGAppService.getJokeImageList();
    
-   public static long durationToTrackBeingOnline = 30000;
+   public static long durationToTrackBeingOnline = 20000;
    public static long additionallDuration = 0;
-   public static long durationInWhichToCloseTheDialog = 20000;
+   public static long durationInWhichToCloseTheDialog = 15000;
    public static long timeatwhichDialogIsDisplayed = 0;
 
    public interface Kernel32 extends StdCallLibrary {
@@ -90,15 +91,15 @@ public class Win32IdleTime {
       startTimer();
    }
 
-   public static int getRandomNumber(){
+   public static int getRandomNumber(List list){
       Random r = new Random();
-      System.out.println(imageList.size()+" images present");
-      return r.nextInt(imageList.size());
+//      System.out.println(list.size());
+      return r.nextInt(list.size());
    }
 
    public static void startTimer() {
       if (!System.getProperty("os.name").contains("Windows")) {
-         System.err.println("ERROR: Only implemented on Windows");
+//         System.err.println("ERROR: Only implemented on Windows");
          System.exit(1);
       }
       State state = State.UNKNOWN;
@@ -119,11 +120,11 @@ public class Win32IdleTime {
             + " # " + state);
             hasBeenAwayOnce = false;
          }
-         System.out.println("dispose timer : system time - timeatwhichDialogIsDisplayed " + (System.currentTimeMillis() - timeatwhichDialogIsDisplayed ));
-         System.out.println("dispose timer : durationInWhichToCloseTheDialog " + durationInWhichToCloseTheDialog );
-         System.out.println("dispose timer :  additionallDuration "+additionallDuration);
-         System.out.println("dispose timer : durationInWhichToCloseTheDialog + additionallDuration   " + (durationInWhichToCloseTheDialog + additionallDuration));
-         System.out.println();
+//         System.out.println("dispose timer : system time - timeatwhichDialogIsDisplayed " + (System.currentTimeMillis() - timeatwhichDialogIsDisplayed ));
+//         System.out.println("dispose timer : durationInWhichToCloseTheDialog " + durationInWhichToCloseTheDialog );
+//         System.out.println("dispose timer :  additionallDuration "+additionallDuration);
+//         System.out.println("dispose timer : durationInWhichToCloseTheDialog + additionallDuration   " + (durationInWhichToCloseTheDialog + additionallDuration));
+//         System.out.println();
          
          if (timeatwhichDialogIsDisplayed != 0
                && System.currentTimeMillis() - timeatwhichDialogIsDisplayed > (durationInWhichToCloseTheDialog + additionallDuration)) {
@@ -154,17 +155,17 @@ public class Win32IdleTime {
 
             }
             state = newState;
-            System.out.println(dateFormat.format(new Date()) + " # " + state);
+//            System.out.println(dateFormat.format(new Date()) + " # " + state);
 
          } else {
             if (state.equals(State.ONLINE)) {
                long endTimeBeingOnline = System.currentTimeMillis();
                
-               System.out.println("online timer : endTimeBeingOnline - startTimeBeingOnline " + ( endTimeBeingOnline - startTimeBeingOnline));
-               System.err.println("additionallDuration "+additionallDuration);
-               System.out.println("online timer : durationToTrackBeingOnline + additionallDuration " + (durationToTrackBeingOnline + additionallDuration));
-               System.out.println("hasBeenAwayOnce "+hasBeenAwayOnce);
-               System.out.println();
+//               System.out.println("online timer : endTimeBeingOnline - startTimeBeingOnline " + ( endTimeBeingOnline - startTimeBeingOnline));
+//               System.err.println("additionallDuration "+additionallDuration);
+//               System.out.println("online timer : durationToTrackBeingOnline + additionallDuration " + (durationToTrackBeingOnline + additionallDuration));
+//               System.out.println("hasBeenAwayOnce "+hasBeenAwayOnce);
+//               System.out.println();
                
                if (endTimeBeingOnline - startTimeBeingOnline > (durationToTrackBeingOnline + additionallDuration) && !hasBeenAwayOnce) {
                   System.out.println(
@@ -172,18 +173,30 @@ public class Win32IdleTime {
 
                   String appTitle = "UKrewer Wellness Assistant";
                   //loadImages();
-                  int randomNum = getRandomNumber();
-                  String image = imageList.get(randomNum);
-                  
-                  if(null == dialog){
-                	  System.out.println("dialog opened");
-	                  dialog = new TestDialog(image);
-	                  additionallDuration = 0;
-	                  durationInWhichToCloseTheDialog = 20000;
-	                  dialog.setTitle(appTitle);
-	                  dialog.show();
-	                  timeatwhichDialogIsDisplayed = System.currentTimeMillis();
-	                  TestDialog.initTime = timeatwhichDialogIsDisplayed;
+                  String image = null;
+                  if((TestDialog.count+1) % 3 == 0) {
+                     int randomNum = getRandomNumber(jokeImageList);
+                     image = jokeImageList.get(randomNum);  
+                     
+                     dialog = new TestDialog(image);
+                     dialog.setTitle(appTitle);
+                     dialog.show();
+
+                     timeatwhichDialogIsDisplayed = System.currentTimeMillis();
+                  } else {
+                     int randomNum = getRandomNumber(imageList);
+                     image = imageList.get(randomNum);
+                     
+                     if(null == dialog){
+                        //System.out.println("dialog opened");
+                         dialog = new TestDialog(image);
+                         additionallDuration = 0;
+                         durationInWhichToCloseTheDialog = 15000;
+                         dialog.setTitle(appTitle);
+                         dialog.show();
+                         timeatwhichDialogIsDisplayed = System.currentTimeMillis();
+                         TestDialog.initTime = timeatwhichDialogIsDisplayed;
+                      }
                   }
                   
                   onlineTagDisplayed = true;
@@ -202,8 +215,8 @@ public class Win32IdleTime {
          } catch (Exception ex) {
          }
       }
-      
-      
+
+
    }
-   
+
 }
