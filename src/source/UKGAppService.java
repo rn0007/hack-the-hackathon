@@ -74,10 +74,12 @@ public class UKGAppService {
    }
 
    public static void loadJokeImages(){
+      jokeImageList.add("drink_water.gif");
       jokeImageList.add("Jokes_of_the_day_1.jpg");
       jokeImageList.add("Jokes_of_the_day_2.jpg");
       jokeImageList.add("environmental-joke.png");
       jokeImageList.add("thanks-boss.jpg");
+      jokeImageList.add("stay_hydrated.gif");
    }
 
    public static void stopUKGApp() {

@@ -42,19 +42,19 @@ public class MenuBarSettings {
 		JMenuItem oneHourMenuItem = new JMenuItem("1 Hour");
 
 		thirtyMinsMenuItem.addActionListener((event) -> {
-			Win32IdleTime.durationToTrackBeingOnline = 30000;
+			Win32IdleTime.durationToTrackBeingOnline = 1800000;
 			System.out.println("MenuBarSettings.createMenuBar()" + Win32IdleTime.durationToTrackBeingOnline);
 
 		});
 
 		fourtyFiveMinsMenuItem.addActionListener((event) -> {
-			Win32IdleTime.durationToTrackBeingOnline = 45000;
+			Win32IdleTime.durationToTrackBeingOnline = 2700000;
 			System.out.println("MenuBarSettings.createMenuBar()" + Win32IdleTime.durationToTrackBeingOnline);
 
 		});
 
 		oneHourMenuItem.addActionListener((event) -> {
-			Win32IdleTime.durationToTrackBeingOnline = 60000;
+			Win32IdleTime.durationToTrackBeingOnline = 3600000;
 			System.out.println("MenuBarSettings.createMenuBar()" + Win32IdleTime.durationToTrackBeingOnline);
 
 		});

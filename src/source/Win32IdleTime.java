@@ -23,9 +23,9 @@ public class Win32IdleTime {
    public static List<String> imageList = UKGAppService.getImageList();
    public static List<String> jokeImageList = UKGAppService.getJokeImageList();
    
-   public static long durationToTrackBeingOnline = 20000;
+   public static long durationToTrackBeingOnline = 1800000;
    public static long additionallDuration = 0;
-   public static long durationInWhichToCloseTheDialog = 15000;
+   public static long durationInWhichToCloseTheDialog = 20000;
    public static long timeatwhichDialogIsDisplayed = 0;
 
    public interface Kernel32 extends StdCallLibrary {
@@ -141,7 +141,7 @@ public class Win32IdleTime {
          State newState = null;
          if (idleSec < 30) {
             newState = State.ONLINE;
-         } else if (idleSec > 60) {
+         } else if (idleSec > 300) {
             newState = State.AWAY;
             hasBeenAwayOnce = true;
          } else {
@@ -191,7 +191,7 @@ public class Win32IdleTime {
                         //System.out.println("dialog opened");
                          dialog = new TestDialog(image);
                          additionallDuration = 0;
-                         durationInWhichToCloseTheDialog = 15000;
+                         durationInWhichToCloseTheDialog = 20000;
                          dialog.setTitle(appTitle);
                          dialog.show();
                          timeatwhichDialogIsDisplayed = System.currentTimeMillis();
